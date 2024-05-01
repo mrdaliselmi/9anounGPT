@@ -5,7 +5,7 @@
 ### Start developing
 
 ```shell
-git clone https://github.com/Lakhdher/projet_web_angular.git
+git clone https://github.com/mrdaliselmi/9anounGPT.git
 cd projet_web_angular
 git submodule init
 git submodule update --remote --rebase
