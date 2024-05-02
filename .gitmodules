@@ -4,3 +4,6 @@
 [submodule "chatbot-backend"]
 	path = chatbot-backend
 	url = https://github.com/Lakhdher/PFA
+[submodule "forum-backend"]
+	path = forum-backend
+	url = https://github.com/mrdaliselmi/forum-backend.git
