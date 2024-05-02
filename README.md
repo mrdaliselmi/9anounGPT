@@ -6,7 +6,7 @@
 
 ```shell
 git clone https://github.com/mrdaliselmi/9anounGPT.git
-cd projet_web_angular
+cd 9anounGPT
 git submodule init
 git submodule update --remote --rebase
 git submodule foreach --recursive git checkout dev
