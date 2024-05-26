@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  forum-backend:
+    image: forum-backend
+    build:
+      context: ./forum-backend
+      dockerfile: Dockerfile.prod
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - DB_HOST=mysql_db
+      - RABBITMQ_HOST=amqp://rabbitmq:5672
+      - RABBITMQ_NOTIF_QUEUE=notif-queue
+      - RABBITMQ_DURABLE=true
+    depends_on:
+      - mysql_db
+      - rabbitmq
+    networks:
+      - forum-network
+
+  mysql_db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_TCP_PORT: 3306
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - forum-network
+  
+  rabbitmq:
+    image: rabbitmq:3.12.14-management
+    container_name: rabbitmq-9anounGPT
+    restart: always
+    hostname: rabbitmq
+    ports:
+      - 5672:5672  
+      - 15672:15672  
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - forum-network
+
+  chatbot:
+    image: mehdixlabetix/chatbot-backend:latest
+    ports:
+      - "5000:5000"
+    links:
+      - mongo
+      - ollama
+    depends_on:
+      - mongo
+      - ollama
+    restart: always
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_DATABASE=PFA
+    ports:
+      - "27017:27017"   
+    restart: always 
+    networks:
+      - app-network
+    volumes:
+      - mongodata:/data/db
+
+  ollama:
+    image: mehdixlabetix/mistral-ollama:latest
+    ports:
+      - "11434:11434"  
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - app-network
+
+networks:
+  app-network: 
+    driver: bridge
+  forum-network:
+    driver: bridge
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  db_data:
+    driver: local
+  mongodata:
+    driver: local
