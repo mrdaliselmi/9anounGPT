@@ -1,6 +1,6 @@
 # 9anounGPT
 
-9anounGPT is an AI Lawyer Assistant designed specifically for Tunisian law. It provides intelligent legal consultation and assistance through a sophisticated platform.
+9anounGPT is an AI Lawyer Assistant designed specifically for Tunisian law. It provides intelligent legal consultation and assistance through a sophisticated platform .
 
 https://github.com/mrdaliselmi/9anounGPT/assets/75693386/c39858e7-d83c-41bc-a8af-6e01ecefee5d
 
